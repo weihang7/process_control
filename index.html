@@ -1,0 +1,38 @@
+<html>
+<h1>Inter-Job Dependencies in Cluster Scheduling</h1>
+<h3>Weihang Fan (wfan)</h3>
+<h2>Project Description</h2>
+<p>My collaborators will be Jun Woo Park, a graduate student in the Parallel Data Lab (PDL) working on cluster scheduling, and Professor Greg Ganger, the director of PDL and a professor in the Computer Science and Electrical and Computer Engineering departments with research interests in computer systems.</p>
+<p>The project will be a continuation of our current work building the testing infrastructure for running a DAG workload in the form of sleep jobs on a cluster of many nodes. We will first construct extremely interdependent workloads (in the shape of a linked list) and measure them with existing schedulers. Measurements will be in the form of goodput, the total runtime of the jobs that are usefully completed, and SLO (service level objective) miss rates, the percentage of jobs that had deadlines but ended up missing their deadlines. We will then attempt to come up with ways to incorporate inter-job dependencies into the scheduling process, perhaps by a process of perturbation/simulated annealing. (method suggested by Pankaj Mehra of Samsung)</p>
+<p>Frameworks that produce DAG workloads, such as Apache Spark, are currently the mainstream of large-scale commercial data processing. A better way of scheduling the jobs in a DAG to better meet SLOs would increase the efficiency of the datacenters, and due to their scale, even a small improvement would bring large cost savings. In addition, many data analysis jobs run on frameworks like Spark are mission-critical to the decisions of financial firms (like Two Sigma) to buy or sell equities, and as such allowing more jobs to meet deadlines will often bring financial gains to companies.</p>
+<h2>Project Goals</h2>
+<h3>75%</h3>
+<ul>
+    <li>Measure some synthetic DAG job traces on existing schedulers</li>
+    <li>Implement a framework for converting real job traces to abstract DAGs runnable by the current infrastructure</li>
+</ul>
+<h3>100%</h3>
+In addition to the above, implement a potential method of scheduling that takes into account DAG inter-job dependencies
+<h3>125%</h3>
+Achieve significant improvement for DAG jobs over state-of-the-art dependency-unaware schedulers
+<h2>Milestones</h2>
+<ul>
+    <li>1st: Complete synthetic DAG scheduler testing framework, read up on Spark job trace formats and how to obtain them</li>
+    <li>2/1: Implement a first draft of the converter from Spark job traces to abstract DAGs</li>
+    <li>2/15: Complete DAG converter, measure existing scheduler on Spark traces</li>
+    <li>3/1: Familiarize self with existing MILP-based scheduler codebase, start implementing an annealing-based algorithm</li>
+    <li>3/22: Continue implementing an annealing-based algorithm</li>
+    <li>4/5: Finish implementing the annealing-based algorithm</li>
+    <li>4/19: Conduct measurements on synthetic workloads</li>
+    <li>5/3: Conduct measurements on real-life job traces</li>
+</ul>
+<h2>Literature Search</h2>
+I have read multiple papers in the field of cluster scheduling, including the following:
+<ul>
+    <li>Robert Grandl, Srikanth Kandula, Sriram Rao, Aditya Akella, and Janardhan Kulkarni. 2016. Graphene: packing and dependency-aware scheduling for data-parallel clusters. In OSDI '16.<a href="https://dl.acm.org/citation.cfm?id=3026877.3026885">https://dl.acm.org/citation.cfm?id=3026877.3026885</a></li>
+    <li>Jun Woo Park, Alexey Tumanov, Angela Jiang, Michael A. Kozuch, and Gregory R. Ganger. 2018. 3Sigma: distribution-based cluster scheduling for runtime uncertainty. In EuroSys ‘18.<a href="https://dl.acm.org/citation.cfm?id=3190515">https://dl.acm.org/citation.cfm?id=3190515</a></li>
+    <li>New developments by Microsoft on Yarn and Tez: <a href="https://dataworkssummit.com/san-jose-2018/session/scaling-apache-tez-to-exabyte-scale/">https://dataworkssummit.com/san-jose-2018/session/scaling-apache-tez-to-exabyte-scale/</a></li>
+</ul>
+<h2>Resources Needed</h2>
+<p>We will use the PDL Narwhal cluster, a 400-node bare-metal cluster run on Emulab, for experiments. Experiments will be done using modified version of Apache Hadoop and Apache Tez, both free and open source software. We do not need additional resources for the project.</p>
+</html>
