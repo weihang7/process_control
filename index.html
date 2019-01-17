@@ -1,38 +1,53 @@
 <html>
-<h1>Inter-Job Dependencies in Cluster Scheduling</h1>
-<h3>Weihang Fan (wfan)</h3>
-<h2>Project Description</h2>
-<p>My collaborators will be Jun Woo Park, a graduate student in the Parallel Data Lab (PDL) working on cluster scheduling, and Professor Greg Ganger, the director of PDL and a professor in the Computer Science and Electrical and Computer Engineering departments with research interests in computer systems.</p>
-<p>The project will be a continuation of our current work building the testing infrastructure for running a DAG workload in the form of sleep jobs on a cluster of many nodes. We will first construct extremely interdependent workloads (in the shape of a linked list) and measure them with existing schedulers. Measurements will be in the form of goodput, the total runtime of the jobs that are usefully completed, and SLO (service level objective) miss rates, the percentage of jobs that had deadlines but ended up missing their deadlines. We will then attempt to come up with ways to incorporate inter-job dependencies into the scheduling process, perhaps by a process of perturbation/simulated annealing. (method suggested by Pankaj Mehra of Samsung)</p>
-<p>Frameworks that produce DAG workloads, such as Apache Spark, are currently the mainstream of large-scale commercial data processing. A better way of scheduling the jobs in a DAG to better meet SLOs would increase the efficiency of the datacenters, and due to their scale, even a small improvement would bring large cost savings. In addition, many data analysis jobs run on frameworks like Spark are mission-critical to the decisions of financial firms (like Two Sigma) to buy or sell equities, and as such allowing more jobs to meet deadlines will often bring financial gains to companies.</p>
-<h2>Project Goals</h2>
-<h3>75%</h3>
-<ul>
-    <li>Measure some synthetic DAG job traces on existing schedulers</li>
-    <li>Implement a framework for converting real job traces to abstract DAGs runnable by the current infrastructure</li>
-</ul>
-<h3>100%</h3>
-In addition to the above, implement a potential method of scheduling that takes into account DAG inter-job dependencies
-<h3>125%</h3>
-Achieve significant improvement for DAG jobs over state-of-the-art dependency-unaware schedulers
-<h2>Milestones</h2>
-<ul>
-    <li>1st: Complete synthetic DAG scheduler testing framework, read up on Spark job trace formats and how to obtain them</li>
-    <li>2/1: Implement a first draft of the converter from Spark job traces to abstract DAGs</li>
-    <li>2/15: Complete DAG converter, measure existing scheduler on Spark traces</li>
-    <li>3/1: Familiarize self with existing MILP-based scheduler codebase, start implementing an annealing-based algorithm</li>
-    <li>3/22: Continue implementing an annealing-based algorithm</li>
-    <li>4/5: Finish implementing the annealing-based algorithm</li>
-    <li>4/19: Conduct measurements on synthetic workloads</li>
-    <li>5/3: Conduct measurements on real-life job traces</li>
-</ul>
-<h2>Literature Search</h2>
-I have read multiple papers in the field of cluster scheduling, including the following:
-<ul>
-    <li>Robert Grandl, Srikanth Kandula, Sriram Rao, Aditya Akella, and Janardhan Kulkarni. 2016. Graphene: packing and dependency-aware scheduling for data-parallel clusters. In OSDI '16.<a href="https://dl.acm.org/citation.cfm?id=3026877.3026885">https://dl.acm.org/citation.cfm?id=3026877.3026885</a></li>
-    <li>Jun Woo Park, Alexey Tumanov, Angela Jiang, Michael A. Kozuch, and Gregory R. Ganger. 2018. 3Sigma: distribution-based cluster scheduling for runtime uncertainty. In EuroSys ‘18.<a href="https://dl.acm.org/citation.cfm?id=3190515">https://dl.acm.org/citation.cfm?id=3190515</a></li>
-    <li>New developments by Microsoft on Yarn and Tez: <a href="https://dataworkssummit.com/san-jose-2018/session/scaling-apache-tez-to-exabyte-scale/">https://dataworkssummit.com/san-jose-2018/session/scaling-apache-tez-to-exabyte-scale/</a></li>
-</ul>
-<h2>Resources Needed</h2>
-<p>We will use the PDL Narwhal cluster, a 400-node bare-metal cluster run on Emulab, for experiments. Experiments will be done using modified version of Apache Hadoop and Apache Tez, both free and open source software. We do not need additional resources for the project.</p>
+    <body>
+        <h1>Revisiting Process Control with New Processor Features</h1>
+        <h3>Weihang Fan (wfan)</h3>
+        <h2>Project Description</h2>
+        <p>
+            My collaborator will be Professor Todd Mowry, professor in the Computer Science Department.
+        </p>
+        <p>This project would involve first measuring the effects of some modern processor features, such as TurboBoost on various workloads. Specifically, we want to look at the behavior (in terms of performance) of programs when they are given less threads than cores available. Then, we would need to characterize the kind of workloads for which intentionally decreasing the number of threads below the number of cores would increase performance. To concretely implement a solution taking advantage of this characterization, we will implement a modification to the process control mechanism in OpenMP to dynamically adjust the number of threads based on measured program behavior (e.g. cache misses).
+        </p>
+        <p>
+            The main challenge of this project lies in the fact that the hypothesis goes against decades of established knowledge in parallel computing - that in general it is best to run parallel programs with the number of threads equal to the number of virtual cores available. In addition, on the implementation side, OpenMP implementations are very low-level and the source codes are complex, figuring out how to modify them to perform process control could be very difficult and nearly impossible. In addition, measuring things like cache misses and processor frequency could be inaccessible to user-mode programs like OpenMP, and we might need to figure out some creative ways of implementing the dynamic measurement.
+        </p>
+        <h2>Project Goals</h2>
+        <h3>75%</h3>
+        <ul>
+            <li>Measure the impact, in terms of performance and energy efficiency, of reducing the number of processes on non-false-sharing programs and programs that do have a lot of false sharing</li>
+            <li>Characterize program behavior where reducing the number of threads would improve performance</li>
+        </ul>
+        <h3>100%</h3>
+        All of the above, and either of the following:
+        <ul>
+            <li>Implement a modification to OpenMP that dynamically detects the number of cache misses and performs process control to improve performance</li>
+            <li>Implement a modification to OpenMP that dynamically detects when TurboBoost would be more effective than multiprocessing and performs process control to improve performance</li>
+        </ul>
+        <h3>125%</h3>
+        <ul>
+            <li>Both of the above</li>
+        </ul>
+        <h2>Milestones</h2>
+        <ul>
+            <li>1st: Conduct background reading on the subject of process control, investigate how modern frameworks like OpenMP implement process control</li>
+            <li>2/1: Conduct initial experiments relating number of threads to performance for various types of workloads on the latedays cluster</li>
+            <li>2/15: Conducting further experiments to characterize workloads that benefit from process control, implement hello-world modifications to OpenMP’s process control mechanism</li>
+            <li>3/1: Start working on the OpenMP process control modification, implement some sort of method of gauging workload characteristic</li>
+            <li>3/22: Start implementing process control based on the above mechanism</li>
+            <li>4/5: Continue the above task</li>
+            <li>4/19: Finish OpenMP modification, debug so it’s ready for measurement</li>
+            <li>5/3: Conduct measurements on OpenMP modification on the same workloads used in initial measurements</li>
+        </ul>
+        <h2>Literature Search</h2>
+        I have read multiple papers in the field of process control, including the following:
+        <ul>
+            <li>A. Tucker and A. Gupta. 1989. Process control and scheduling issues for multiprogrammed shared-memory multiprocessors. In Proceedings of the twelfth ACM symposium on Operating systems principles (SOSP '89). ACM, New York, NY, USA, 159-166. DOI: https://doi.org/10.1145/74850.74866</li>
+            <li>Rohit Chandra, Scott Devine, Ben Verghese, Anoop Gupta, and Mendel Rosenblum. 1994. Scheduling and page migration for multiprocessor compute servers. In Proceedings of the sixth international conference on Architectural support for programming languages and operating systems(ASPLOS VI). ACM, New York, NY, USA, 12-24. DOI=http://dx.doi.org/10.1145/195473.195485</li>
+            <li>Ben Verghese, Anoop Gupta, and Mendel Rosenblum. 1998. Performance isolation: sharing and isolation in shared-memory multiprocessors. In Proceedings of the eighth international conference on Architectural support for programming languages and operating systems (ASPLOS VIII). ACM, New York, NY, USA, 181-192. DOI=http://dx.doi.org/10.1145/291069.291044</li>
+            <li>Thomas E. Anderson, Brian N. Bershad, Edward D. Lazowska, and Henry M. Levy. 1991. Scheduler activations: effective kernel support for the user-level management of parallelism. In Proceedings of the thirteenth ACM symposium on Operating systems principles (SOSP '91). ACM, New York, NY, USA, 95-109. DOI=http://dx.doi.org/10.1145/121132.121151</li>
+        </ul>
+        <h2>Resources Needed</h2>
+        <p>In order to perform performance will use the latedays cluster, which has nodes with two six-core Xeon e5-2620 v3 processors with all of the modern features that we would like to measure (TurboBoost, hyperthreading, cache hierarchy, etc.). If needed, we might want to utilize bare metal servers on vultr.io for more variety in hardware.
+        </p>
+    </body>
 </html>
